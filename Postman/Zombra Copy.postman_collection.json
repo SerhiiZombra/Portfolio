@@ -1,0 +1,231 @@
+{
+	"info": {
+		"_postman_id": "1f544de2-6769-4f4e-9606-24b829f13246",
+		"name": "Zombra Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27427614"
+	},
+	"item": [
+		{
+			"name": "Homework",
+			"item": [
+				{
+					"name": "create user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\":\"serhii\",\r\n\"age\":37,\r\n\"gender\":\"male\",\r\n\"city\":\"Poltava\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}users",
+							"host": [
+								"{{url}}users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 1000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"pm.test(\"Перевірка наявності помилки\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"    pm.response.to.have.jsonBody(\"error\", \"Перевищено допустиме значення\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"maxValue\", 100);\r",
+									"pm.variables.set(\"paramValue\", pm.variables.get(\"maxValue\") + 1);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}users/{invalid_ID}",
+							"host": [
+								"{{url}}users"
+							],
+							"path": [
+								"{invalid_ID}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body matches string Kyiv\", function () {\r",
+									"        pm.expect(pm.response.text()).to.include(\"Kyiv\");\r",
+									"    });\r",
+									"pm.test(\"Body matches string Poltava\", function () {\r",
+									"        pm.expect(pm.response.text()).to.include(\"Poltava\");\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"age\": \"thirty seven\",\r\n    \"city\": \"Kyiv\",\r\n    \"gender\": \"female\",\r\n    \"id\": \"867f10be-bd07-4aff-b835-26de398ccb96\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}users",
+							"host": [
+								"{{url}}users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"User Deletion Test\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"No user found\");\r",
+									"});\r",
+									"pm.test(\"The status code must be 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"The status code must be 302\", function () {\r",
+									"    pm.response.to.have.status(302);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"gender\": \"male\",\r\n    \"city\": \"Kyiv\",\r\n    \"name\": \"serhii\",\r\n    \"id\": \"b62c90e0-b650-4901-8d20-28d292e44ae7\",\r\n    \"age\": 37\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}users?id=867f10be-bd07-4aff-b835-26de398ccb96",
+							"host": [
+								"{{url}}users"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "867f10be-bd07-4aff-b835-26de398ccb96"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base",
+			"value": "https://petstore.swagger.io/v2/",
+			"type": "string"
+		},
+		{
+			"key": "Private",
+			"value": "https://em.staging.api.onereach.ai/http/1b3bebb7-e882-4f1e-a74b-ee381bfa69d6/"
+		}
+	]
+}
